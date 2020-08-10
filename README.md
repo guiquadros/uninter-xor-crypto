@@ -1,4 +1,4 @@
-# Uninter - Matematica Computacional: AP Criptografia Simétrica com XOR
+# Uninter - Matemática Computacional: AP Criptografia Simétrica com XOR
 Atividade Prática (AP) da disciplina de Matemática Computacional do curso de Engenharia de Computação da Uninter:
 
 Codificar a mensagem “APROVADO” por criptografia simétrica pelo algoritmo elementar XOR utilizando como chave criptográfica o seu RU ou parte dele. Após a obtenção da cifra decodificá-la comprovando a reciprocidade do processo.
@@ -19,4 +19,5 @@ https://github.com/guiquadros/uninter-mat-comp-ap-xor-cryptography
 O código é escrito em inglês por uma preferência minha e costume mesmo.
 
 Guilherme Quadros da Silva
+
 RU: 3282910
