@@ -42,6 +42,8 @@ namespace xor_cryptography
         
         private static string EncryptStringXor(string textToEncrypt, int RU)
         {
+            if (string.IsNullOrEmpty(textToEncrypt)) return string.Empty;
+            
             Console.WriteLine($"Encriptando '{textToEncrypt}' com o RU '{RU}'...");
             Console.WriteLine();
             
@@ -108,7 +110,7 @@ namespace xor_cryptography
                 if (i == 0 && diffKeyAndTxt > 0)
                 {
                     string exceededKeyPart = keyInBinStr.Substring(0, diffKeyAndTxt);
-                    WriteInDifferentColor(exceededKeyPart, ConsoleColor.White);
+                    WriteInDifferentColor(exceededKeyPart, ConsoleColor.DarkBlue);
                     Console.Write(XOR_SEPARATOR);
                 }
                 
