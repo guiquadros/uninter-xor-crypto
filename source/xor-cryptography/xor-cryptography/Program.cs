@@ -23,7 +23,7 @@ namespace xor_cryptography
             
             Console.WriteLine($"Buscando valores de '{TEXT_TO_ENCRYPT}' na tabela ASCII:");
             Console.WriteLine("{character} = {valor ASCII em decimal} ({valor ASCII em binario})");
-            List<int> decCharsList = new List<int>();
+            // List<int> decCharsList = new List<int>();
             List<string> binCharsListStr = new List<string>();
             foreach (char character in TEXT_TO_ENCRYPT)
             {
@@ -31,29 +31,93 @@ namespace xor_cryptography
                 string charAsBinStr = ConvertDecToBinStr(charAsDec);
                 WriteLineInDifferentColor($"'{character}' = '{charAsDec} (10)' e '{charAsBinStr} (2)'", ConsoleColor.Gray);
                 
-                decCharsList.Add(charAsDec);
+                // decCharsList.Add(charAsDec);
                 binCharsListStr.Add(charAsBinStr);
             }
 
-            string binStr = string.Join(string.Empty, binCharsListStr);
-            WriteLineInDifferentColor($"'{TEXT_TO_ENCRYPT}' = '{binStr} (2)'", ConsoleColor.Red);
-            string keyInBinStr = GetCriptoKeyFromRU(RU, binStr);
+            string binTxtStr = string.Join(string.Empty, binCharsListStr);
+            WriteLineInDifferentColor($"'{TEXT_TO_ENCRYPT}' = '{binTxtStr} (2)'", ConsoleColor.Red);
+            
+            ulong keyInDec = GetCriptoKeyFromRU(RU, binTxtStr);
+            string keyInBinStr = ConvertDecToBinStr(keyInDec);
+            WriteLineInDifferentColor($"Chave obtida = '{keyInBinStr} (2)'", ConsoleColor.Red);
+            Console.WriteLine();
 
-            // TODO: finish the logic of the cryptography 
+            // logic of the cryptography with XOR
+            int diffKeyAndTxt = keyInBinStr.Length - binTxtStr.Length;
+
+            if (diffKeyAndTxt > 0)
+            {
+                int diffWithPartSize = binCharsListStr[0].Length - diffKeyAndTxt;
+
+                if (diffWithPartSize > 0)
+                {
+                    diffKeyAndTxt += diffWithPartSize;
+
+                    for (int i = 0; i < diffWithPartSize; i++)
+                    {
+                        // complete key with "0" on the left
+                        keyInBinStr = $"0{keyInBinStr}";
+                    }
+                }
+
+                string strToConcat = string.Empty;
+                for (int i = 0; i < diffKeyAndTxt; i++)
+                {
+                    // complete bin of the str with "0" on the left
+                    strToConcat = $"0{strToConcat}";
+                }
+                
+                binTxtStr = $"{strToConcat}{binTxtStr}";
+                binCharsListStr.Insert(0, strToConcat);
+            }
+            
             Console.WriteLine("Criptografando com XOR:");
             string charXORSeparator = "    ";
             foreach (string binChar in binCharsListStr)
             {
-                Console.Write(charXORSeparator + binChar);
+                WriteInDifferentColor(charXORSeparator + binChar, ConsoleColor.Gray);
             }
+            WriteInDifferentColor($"{charXORSeparator}('{TEXT_TO_ENCRYPT}')", ConsoleColor.Cyan);
+            
             Console.WriteLine();
-            Console.Write("XOR ");
+            WriteInDifferentColor("XOR ", ConsoleColor.Cyan);
             for (var i = 0; i < binCharsListStr.Count; i++)
             {
-                string keyPart = keyInBinStr.Substring(i * binCharsListStr[i].Length, binCharsListStr[i].Length);
-                Console.Write(keyPart + charXORSeparator);
+                string keyPart = keyInBinStr.Substring(i * binCharsListStr[i].Length, binCharsListStr[i].Length) + charXORSeparator;
+                WriteInDifferentColor(keyPart, ConsoleColor.Gray);
+            }
+            WriteInDifferentColor($"('{keyInDec}')", ConsoleColor.Cyan);
+
+            Console.WriteLine();
+            Console.Write(charXORSeparator);
+            for (var i = 0; i < binTxtStr.Length + binCharsListStr.Count * charXORSeparator.Length; i++)
+            {
+                Console.Write("-");
             }
 
+            Console.WriteLine();
+            Console.Write(charXORSeparator);
+            string encryptedTxt = string.Empty;
+            for (int i = 0; i < binTxtStr.Length; i++)
+            {
+                int txtCharAsDec = binTxtStr[i];
+                int keyCharAsDec = keyInBinStr[i];
+
+                string xorResultStr = (txtCharAsDec ^ keyCharAsDec).ToString();
+                encryptedTxt += xorResultStr;
+
+                WriteInDifferentColor(xorResultStr, ConsoleColor.Red);
+                
+                if ((i + 1) % binCharsListStr[0].Length == 0)
+                {
+                    Console.Write(charXORSeparator);
+                }
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+            WriteLineInDifferentColor("PRESSIONE QUALQUER TECLA PARA FECHAR A EXECUCAO DO PROGRAMA.", ConsoleColor.DarkBlue);
             Console.ReadKey();
         }
 
@@ -63,7 +127,7 @@ namespace xor_cryptography
         /// <param name="RU">Student RU.</param>
         /// <param name="binCharsListStr"></param>
         /// <returns>The cryptography key.</returns>
-        private static string GetCriptoKeyFromRU(int RU, string binStr)
+        private static ulong GetCriptoKeyFromRU(int RU, string binStr)
         {
             Console.WriteLine();
             Console.WriteLine($"Obtendo a chave de criptografia pelo RU '{RU}':");
@@ -101,10 +165,7 @@ namespace xor_cryptography
                 WriteLineInDifferentColor($"    '{keyInDec} (10)' = '{keyInBinStr} (2)'", ConsoleColor.Gray);
             } while (true);
 
-            WriteLineInDifferentColor($"Chave obtida = '{keyInBinStr} (2)'", ConsoleColor.Red);
-
-            Console.WriteLine();
-            return keyInBinStr;
+            return keyInDec;
         }
 
         private static void WriteLineInDifferentColor(string message, ConsoleColor color)
