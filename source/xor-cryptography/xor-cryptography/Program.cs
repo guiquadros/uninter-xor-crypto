@@ -188,7 +188,11 @@ namespace xor_cryptography
             // Repeats this until we find a proper key
             do
             {
-                WriteLineInDifferentColor($"{++tryCount}) Comparando o tamanho da chave '{keyInDec} (10)' ('{keyInBinStr} (2)' [{keyInBinStr.Length} bits]) obtida com a string que vai ser criptografada '{textToEncrypt}' ('{binStr} (2)' [{binStr.Length} bits]).", ConsoleColor.Cyan);
+                WriteInDifferentColor($"{++tryCount}) Comparando o tamanho da chave '{keyInDec} (10)' ('{keyInBinStr} (2)' ", ConsoleColor.Cyan);
+                WriteInDifferentColor($"[{keyInBinStr.Length} bits]", ConsoleColor.Yellow); 
+                WriteInDifferentColor($") obtida com a string que vai ser criptografada '{textToEncrypt}' ('{binStr} (2)' ", ConsoleColor.Cyan);
+                WriteInDifferentColor($"[{binStr.Length} bits]", ConsoleColor.Yellow);
+                WriteLineInDifferentColor($").", ConsoleColor.Cyan);
                 
                 Console.Write($"    {keyInBinStr.Length} >= {binStr.Length}? --> ");
                 if (keyInBinStr.Length >= binStr.Length)
