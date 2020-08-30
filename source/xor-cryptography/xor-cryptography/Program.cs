@@ -7,16 +7,16 @@ namespace xor_cryptography
 {
     public class Program
     {
+        private const string TEXT_TO_ENCRYPT = "APROVADO";
+        private const int RU = 3282910;
+        
         public static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             
             Console.WriteLine("Uninter - Matematica Computacional: AP Criptografia Simetrica com XOR");
             Console.WriteLine("Autor: Guilherme Quadros da Silva");
             Console.WriteLine();
-
-            const string TEXT_TO_ENCRYPT = "APROVADO";
-            const int RU = 3282910;
 
             Console.WriteLine($"Encriptando '{TEXT_TO_ENCRYPT}' com o RU '{RU}'...");
             Console.WriteLine();
@@ -29,16 +29,17 @@ namespace xor_cryptography
             {
                 int charAsDec = character;
                 string charAsBinStr = ConvertDecToBinStr(charAsDec);
-                Console.WriteLine($"'{character}' = '{charAsDec} (10)' e '{charAsBinStr} (2)'");
+                WriteLineInDifferentColor($"'{character}' = '{charAsDec} (10)' e '{charAsBinStr} (2)'", ConsoleColor.Gray);
                 
                 decCharsList.Add(charAsDec);
                 binCharsListStr.Add(charAsBinStr);
             }
 
             string binStr = string.Join(string.Empty, binCharsListStr);
-            Console.WriteLine($"'{TEXT_TO_ENCRYPT}' = '{binStr} (2)'");
+            WriteLineInDifferentColor($"'{TEXT_TO_ENCRYPT}' = '{binStr} (2)'", ConsoleColor.Red);
             string keyInBinStr = GetCriptoKeyFromRU(RU, binStr);
 
+            // TODO: finish the logic of the cryptography 
             Console.WriteLine("Criptografando com XOR:");
             string charXORSeparator = "    ";
             foreach (string binChar in binCharsListStr)
@@ -49,7 +50,6 @@ namespace xor_cryptography
             Console.Write("XOR ");
             for (var i = 0; i < binCharsListStr.Count; i++)
             {
-                //TODO: fix this. There are missing characters for the whole XOR operation. We are having an exception here due this missing characters.
                 string keyPart = keyInBinStr.Substring(i * binCharsListStr[i].Length, binCharsListStr[i].Length);
                 Console.Write(keyPart + charXORSeparator);
             }
@@ -65,53 +65,96 @@ namespace xor_cryptography
         /// <returns>The cryptography key.</returns>
         private static string GetCriptoKeyFromRU(int RU, string binStr)
         {
-            ulong test = 32829103282910328;
-            Console.WriteLine(test);
-
             Console.WriteLine();
             Console.WriteLine($"Obtendo a chave de criptografia pelo RU '{RU}':");
             
-            int keyInDec = RU;
+            ulong keyInDec = (ulong)RU;
+            string RUstr = RU.ToString();
             string RUinBinStr = ConvertDecToBinStr(RU);
-            
             string keyInBinStr = RUinBinStr;
             Console.WriteLine($"'{keyInDec} (10)' = '{keyInBinStr} (2)'");
 
             int tryCount = 0;
+            int RUcharPos = -1;
+            
             // Repeats this until we find a proper key
             do
             {
-                Console.WriteLine($"{++tryCount}) Comparando o tamanho da chave '{keyInBinStr} (2)' ({keyInBinStr.Length} bits) obtida com a string que vai ser criptografada '{binStr} (2)' ({binStr.Length} bits).");
+                WriteLineInDifferentColor($"{++tryCount}) Comparando o tamanho da chave '{keyInDec} (10)' ('{keyInBinStr} (2)' [{keyInBinStr.Length} bits]) obtida com a string que vai ser criptografada '{TEXT_TO_ENCRYPT}' ('{binStr} (2)' [{binStr.Length} bits]).", ConsoleColor.Cyan);
                 
                 Console.Write($"    {keyInBinStr.Length} >= {binStr.Length}? --> ");
                 if (keyInBinStr.Length >= binStr.Length)
                 {
-                    Console.WriteLine("Sim!");
+                    WriteInDifferentColor("Sim! ", ConsoleColor.Red);
                     break;
                 }
                 
-                Console.WriteLine("Nao!");
+                WriteLineInDifferentColor($"Nao! O tamanho da chave obtida nao e suficiente para criptografar com XOR a string '{TEXT_TO_ENCRYPT}'.", ConsoleColor.Blue);
                 // concatenates the current key with the RU in the end to generate a bigger keys
-                Console.Write($"    Concatenando a chave '{keyInDec} (10)' ('{keyInBinStr} (2)') com o RU '{RU} (10)' ('{RUinBinStr} (2)') para obter uma chave maior que possa criptografar corretamente a string: ");
-                keyInBinStr += RUinBinStr;
-                Console.WriteLine($"'{keyInBinStr} (2)'");
+                char nextRUDigit = GetNextDigitFromRU(RUstr, ref RUcharPos);
+                keyInDec = ulong.Parse($"{keyInDec}{nextRUDigit}");
+                Console.Write($"    Concatenando a chave com o proximo digito do RU ("); 
+                WriteInDifferentColor($"'{keyInDec} (10)' + '{nextRUDigit} (10)'", ConsoleColor.Gray);
+                Console.WriteLine($") para obter uma chave maior:");
+                
+                keyInBinStr = ConvertDecToBinStr(keyInDec);
+                WriteLineInDifferentColor($"    '{keyInDec} (10)' = '{keyInBinStr} (2)'", ConsoleColor.Gray);
             } while (true);
 
-            ConsoleColor oldFgColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;    
-            Console.WriteLine($"Chave obtida = '{keyInBinStr} (2)'");
-            Console.ForegroundColor = oldFgColor;
+            WriteLineInDifferentColor($"Chave obtida = '{keyInBinStr} (2)'", ConsoleColor.Red);
+
             Console.WriteLine();
             return keyInBinStr;
         }
+
+        private static void WriteLineInDifferentColor(string message, ConsoleColor color)
+        {
+            ConsoleColor oldFgColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;    
+            Console.WriteLine(message);
+            Console.ForegroundColor = oldFgColor;
+        }
         
+        private static void WriteInDifferentColor(string message, ConsoleColor color)
+        {
+            ConsoleColor oldFgColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;    
+            Console.Write(message);
+            Console.ForegroundColor = oldFgColor;
+        }
+
+        /// <summary>
+        /// Return the next digit position in the student's RU.
+        /// </summary>
+        /// <param name="RUstr">The student's RU.</param>
+        /// <param name="digitPos">The digit used in last concatenation.</param>
+        /// <returns></returns>
+        private static char GetNextDigitFromRU(string RUstr, ref int digitPos)
+        {
+            if (digitPos < RUstr.Length - 1)
+            {
+                digitPos++;
+            }
+            else
+            {
+                digitPos = 0;
+            }
+            
+            return RUstr[digitPos];
+        }
+
         private static string ConvertDecToBinStr(int decNum)
+        {
+            return ConvertDecToBinStr((ulong) decNum);
+        }
+
+        private static string ConvertDecToBinStr(ulong decNum)
         {
 #if DEBUG_BIN_CONVERSION
             Console.WriteLine($"Convertendo '{decNum}' para binario:");
 #endif
 
-            int result = decNum;
+            ulong result = decNum;
             string binResult = string.Empty;
             
             while (result > 1)
@@ -120,7 +163,7 @@ namespace xor_cryptography
                 Console.Write($"{result} divido por 2: ");
 #endif
                 
-                int remaining = result % 2;
+                ulong remaining = result % 2;
                 binResult = $"{remaining}{binResult}"; 
                 result /= 2;
                 
