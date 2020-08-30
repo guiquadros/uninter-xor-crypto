@@ -14,7 +14,7 @@ Será disponibilizado também um arquido PDF com imagens do programa sendo execu
 
 Esse projeto foi desenvolvido utilizado GitHub para controle de versão no repositório privado abaixo. Se o professor desejar eu posso dar acesso ao repositório, mas não posso deixá-lo público para evitar cola de outras pessoas fazendo o mesmo trabalho. 
 
-https://github.com/guiquadros/uninter-mat-comp-ap-xor-cryptography
+https://github.com/guiquadros/uninter-xor-crypto
 
 O código é escrito em inglês por uma preferência minha e costume mesmo.
 
