@@ -23,7 +23,6 @@ namespace xor_cryptography
             
             Console.WriteLine($"Buscando valores de '{TEXT_TO_ENCRYPT}' na tabela ASCII:");
             Console.WriteLine("{character} = {valor ASCII em decimal} ({valor ASCII em binario})");
-            // List<int> decCharsList = new List<int>();
             List<string> binCharsListStr = new List<string>();
             foreach (char character in TEXT_TO_ENCRYPT)
             {
@@ -31,7 +30,6 @@ namespace xor_cryptography
                 string charAsBinStr = ConvertDecToBinStr(charAsDec);
                 WriteLineInDifferentColor($"'{character}' = '{charAsDec} (10)' e '{charAsBinStr} (2)'", ConsoleColor.Gray);
                 
-                // decCharsList.Add(charAsDec);
                 binCharsListStr.Add(charAsBinStr);
             }
 
