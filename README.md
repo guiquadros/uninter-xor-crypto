@@ -12,10 +12,6 @@ Mas se o seu sistema operacional não suportar o executável você conseguirá f
 
 Será disponibilizado também um arquido PDF com imagens do programa sendo executado e do código-fonte.
 
-Esse projeto foi desenvolvido utilizado GitHub para controle de versão no repositório privado abaixo. Se o professor desejar eu posso dar acesso ao repositório, mas não posso deixá-lo público para evitar cola de outras pessoas fazendo o mesmo trabalho. 
-
-https://github.com/guiquadros/uninter-xor-crypto
-
 O código é escrito em inglês por uma preferência minha e costume mesmo.
 
 Guilherme Quadros da Silva
