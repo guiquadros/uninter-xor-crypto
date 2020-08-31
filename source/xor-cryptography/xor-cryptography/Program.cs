@@ -317,8 +317,19 @@ namespace xor_cryptography
 
         private static int ConvertBinToDec(string binNum)
         {
-            //TODO: implement my own bin to dec algorithm
-            return Convert.ToInt32(binNum, 2);
+            int decVal = 0;
+            int baseVal = 1;
+            int num = int.Parse(binNum);
+            
+            while (num > 0)
+            {
+                int remaining = num % 10;
+                decVal += remaining * baseVal;
+                num /= 10 ;
+                baseVal *= 2;
+            }
+            
+            return decVal;
         }
     }
 }
