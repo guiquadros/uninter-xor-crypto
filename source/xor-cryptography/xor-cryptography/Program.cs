@@ -317,19 +317,19 @@ namespace xor_cryptography
 
         private static int ConvertBinToDec(string binNum)
         {
-            int decVal = 0;
-            int baseVal = 1;
-            int num = int.Parse(binNum);
+            const int NEW_BASE = 2;
             
-            while (num > 0)
+            // only works with integers (without the floating point piece)
+            int lastIndex = binNum.Length - 1;
+            int result = 0;
+            for (int i = lastIndex; i >= 0; i--)
             {
-                int remaining = num % 10;
-                decVal += remaining * baseVal;
-                num /= 10 ;
-                baseVal *= 2;
+                int index = lastIndex - i;
+                int digit = int.Parse(binNum[index].ToString());
+                result += digit * (int)Math.Pow(NEW_BASE, i);
             }
             
-            return decVal;
+            return result;
         }
     }
 }
