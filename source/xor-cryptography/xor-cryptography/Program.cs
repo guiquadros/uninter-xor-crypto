@@ -52,13 +52,15 @@ namespace xor_cryptography
             if (string.IsNullOrEmpty(textToEncrypt)) return string.Empty;
 
             Console.WriteLine($"Buscando valores de {ToLiteral(textToEncrypt)} na tabela ASCII:");
-            Console.WriteLine("\"{character}\" = \"{valor ASCII em decimal}\" (\"{valor ASCII em binario}\")");
+            Console.WriteLine("\"{character}\" = \"{valor ASCII em decimal}\" e \"{valor ASCII em binario}\"");
             List<string> binCharsListStr = new List<string>();
             foreach (char character in textToEncrypt)
             {
                 int charAsDec = character;
                 string charAsBinStr = ConvertDecToBinStr(charAsDec);
-                WriteLineInDifferentColor($"{ToLiteral(character.ToString())} = \"{charAsDec} (10)\" e \"{charAsBinStr} (2)\"", ConsoleColor.Gray);
+                
+                string decToShow = $"\"{charAsDec} (10)\"";
+                WriteLineInDifferentColor($"{ToLiteral(character.ToString()).PadLeft(10, ' ')} = {decToShow.PadLeft(10, ' ')} e \"{charAsBinStr} (2)\"", ConsoleColor.Gray);
                 
                 binCharsListStr.Add(charAsBinStr);
             }
