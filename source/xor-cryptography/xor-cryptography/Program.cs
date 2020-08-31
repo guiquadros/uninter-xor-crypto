@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace xor_cryptography
 {
     public class Program
     {
+        private const int BIN_PART_SIZE = 7;
+        
         public static void Main(string[] args)
         {
             const string TEXT_TO_ENCRYPT = "APROVADO";
@@ -72,17 +75,14 @@ namespace xor_cryptography
             // adding additional "0" in the key
             if (diffKeyAndTxt > 0)
             {
-                int diffWithPartSize = binCharsListStr[0].Length - diffKeyAndTxt;
+                int diffWithPartSize = BIN_PART_SIZE - diffKeyAndTxt;
             
                 if (diffWithPartSize > 0)
                 {
                     diffKeyAndTxt += diffWithPartSize;
-            
-                    for (int i = 0; i < diffWithPartSize; i++)
-                    {
-                        // complete key with "0" on the left
-                        keyInBinStr = $"0{keyInBinStr}";
-                    }
+
+                    // complete key with "0" on the left
+                    keyInBinStr = keyInBinStr.PadLeft(keyInBinStr.Length + diffWithPartSize, '0');
                 }
             }
             
@@ -148,19 +148,31 @@ namespace xor_cryptography
                 encryptedBinTxt = $"{xorResultStr}{encryptedBinTxt}";
             }
 
+            string encryptedTxt = string.Empty;
+            string characterInBin = string.Empty;
             // write down the result
             for (int i = 0; i < encryptedBinTxt.Length; i++)
             {
-                WriteInDifferentColor($"{encryptedBinTxt[i]}", ConsoleColor.Red);
-                
-                if ((i + 1) % binCharsListStr[0].Length == 0)
+                characterInBin = $"{characterInBin}{encryptedBinTxt[i]}";
+
+                if ((i + 1) % BIN_PART_SIZE == 0)
                 {
+                    WriteInDifferentColor($"{characterInBin}", ConsoleColor.Red);
+
+                    int characterInDec = ConvertBinToDec(characterInBin);
+                    char character = (char) characterInDec;
+                    // Console.WriteLine($"'{characterInBin} (2)' = '{characterInDec} (10)' = '{character}' = '{character}'");
+                    
+                    encryptedTxt = $"{encryptedTxt}{character}";
+                    
                     Console.Write(XOR_SEPARATOR);
+                    characterInBin = string.Empty;
                 }
             }
+            WriteInDifferentColor($"('{encryptedTxt}')", ConsoleColor.Cyan);
 
             // TODO: convert back from txt bin to txt and print the encrypted string ('xxxxxx') and return it
-            return string.Empty;
+            return encryptedTxt;
         }
 
         /// <summary>
@@ -281,13 +293,21 @@ namespace xor_cryptography
 #endif
             }
             
-            binResult = $"{result}{binResult}"; 
+            binResult = $"{result}{binResult}";
+
+            binResult = binResult.PadLeft(BIN_PART_SIZE, '0');
         
 #if DEBUG_BIN_CONVERSION
             Console.WriteLine($"'{decNum}' em binario = '{binResult}'");
 #endif
 
             return binResult;
+        }
+
+        private static int ConvertBinToDec(string binNum)
+        {
+            //TODO: implement my own bin to dec algorithm
+            return Convert.ToInt32(binNum, 2);
         }
     }
 }
