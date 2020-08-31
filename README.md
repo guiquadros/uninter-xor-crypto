@@ -30,7 +30,7 @@ O código é escrito em inglês por uma preferência minha e costume mesmo.
 
 ![img-program](/imgs/03.png)
 
-4) O próximo passo é aplicar o operador XOR entre "APROVADO" em binário e a chave obtida. Note que os primeiros bits da chave não são usados na conversão (a chave obtida no passo anterior tem 59 bits enquanto a palavra "APROVADO" em binário tem 56 bits na conversão utilizada no passo 2.
+4) O próximo passo é aplicar o operador XOR entre "APROVADO" em binário e a chave obtida. Note que os primeiros bits da chave não são usados na conversão (a chave obtida no passo anterior tem 59 bits enquanto a palavra "APROVADO" em binário tem 56 bits na conversão utilizada no passo 2).
 
 ![img-program](/imgs/04.png)
 
