@@ -1,3 +1,7 @@
+Guilherme Quadros da Silva
+
+RU: 3282910
+
 # Uninter - Matemática Computacional: AP Criptografia Simétrica com XOR
 Atividade Prática (AP) da disciplina de Matemática Computacional do curso de Engenharia de Computação da Uninter:
 
@@ -10,10 +14,4 @@ A pasta "exe" contém um executável do programa desenvolvido compatível .NET 4
 
 Mas se o seu sistema operacional não suportar o executável você conseguirá facilmente achar na internet uma versão de .NET Framework ou Mono compatível. 
 
-Será disponibilizado também um arquido PDF com imagens do programa sendo executado e do código-fonte.
-
 O código é escrito em inglês por uma preferência minha e costume mesmo.
-
-Guilherme Quadros da Silva
-
-RU: 3282910
