@@ -18,3 +18,10 @@ O código é escrito em inglês por uma preferência minha e costume mesmo.
 
 ## O Programa
 
+![img-program](/imgs/01.png)
+![img-program](/imgs/02.png)
+![img-program](/imgs/03.png)
+![img-program](/imgs/04.png)
+![img-program](/imgs/05.png)
+![img-program](/imgs/06.png)
+![img-program](/imgs/07.png)
