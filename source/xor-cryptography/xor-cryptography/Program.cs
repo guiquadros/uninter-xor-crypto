@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace xor_cryptography
 {
@@ -30,16 +30,16 @@ namespace xor_cryptography
             Console.WriteLine();
             WriteInDifferentColor($"\"{TEXT_TO_ENCRYPT}\" ", ConsoleColor.Cyan);
             WriteInDifferentColor($"foi criptografado para: ", ConsoleColor.Red);
-            WriteLineInDifferentColor($"\"{Regex.Escape(encryptedString)}\"", ConsoleColor.Cyan);
+            WriteLineInDifferentColor($"{ToLiteral(encryptedString)}", ConsoleColor.Cyan);
             Console.WriteLine();
 
             // decryption
             WaitNextStep("PRESSIONE UMA TECLA PARA INICIAR O PROCESSO DE DESCRIPTOGRAFIA.");
-            WriteLineInDifferentColor($"Descriptando \"{Regex.Escape(encryptedString)}\" com o RU \"{RU}\"...", ConsoleColor.Red);
+            WriteLineInDifferentColor($"Descriptando {ToLiteral(encryptedString)} com o RU \"{RU}\"...", ConsoleColor.Red);
             string decryptedString = EncryptStringXor(encryptedString, RU);
             Console.WriteLine();
             Console.WriteLine();
-            WriteInDifferentColor($"\"{Regex.Escape(encryptedString)}\" ", ConsoleColor.Cyan);
+            WriteInDifferentColor($"{ToLiteral(encryptedString)} ", ConsoleColor.Cyan);
             WriteInDifferentColor($"foi descriptografado para: ", ConsoleColor.Red);
             WriteLineInDifferentColor($"\"{decryptedString}\"", ConsoleColor.Cyan);
 
@@ -51,21 +51,21 @@ namespace xor_cryptography
         {
             if (string.IsNullOrEmpty(textToEncrypt)) return string.Empty;
 
-            Console.WriteLine($"Buscando valores de \"{Regex.Escape(textToEncrypt)}\" na tabela ASCII:");
+            Console.WriteLine($"Buscando valores de {ToLiteral(textToEncrypt)} na tabela ASCII:");
             Console.WriteLine("\"{character}\" = \"{valor ASCII em decimal}\" (\"{valor ASCII em binario}\")");
             List<string> binCharsListStr = new List<string>();
             foreach (char character in textToEncrypt)
             {
                 int charAsDec = character;
                 string charAsBinStr = ConvertDecToBinStr(charAsDec);
-                WriteLineInDifferentColor($"\"{Regex.Escape(character.ToString())}\" = \"{charAsDec} (10)\" e \"{charAsBinStr} (2)\"", ConsoleColor.Gray);
+                WriteLineInDifferentColor($"{ToLiteral(character.ToString())} = \"{charAsDec} (10)\" e \"{charAsBinStr} (2)\"", ConsoleColor.Gray);
                 
                 binCharsListStr.Add(charAsBinStr);
             }
 
             string binTxtStr = string.Join(string.Empty, binCharsListStr);
             Console.WriteLine();
-            WriteLineInDifferentColor($"\"{Regex.Escape(textToEncrypt)}\" = \"{binTxtStr} (2)\"", ConsoleColor.Red);
+            WriteLineInDifferentColor($"{ToLiteral(textToEncrypt)} = \"{binTxtStr} (2)\"", ConsoleColor.Red);
 
             WaitNextStep("PRESSIONE UMA TECLA PARA INICIAR O PROCESSO DE OBTENCAO DA CHAVE DE CRIPTOGRAFIA A PARTIR DO RU.");
             
@@ -105,7 +105,7 @@ namespace xor_cryptography
             {
                 WriteInDifferentColor(XOR_SEPARATOR + binChar, ConsoleColor.Gray);
             }
-            WriteInDifferentColor($"{XOR_SEPARATOR}(\"{Regex.Escape(textToEncrypt)}\")", ConsoleColor.Cyan);
+            WriteInDifferentColor($"{XOR_SEPARATOR}({ToLiteral(textToEncrypt)})", ConsoleColor.Cyan);
             
             Console.WriteLine();
             WriteInDifferentColor("XOR ", ConsoleColor.Cyan);
@@ -173,7 +173,7 @@ namespace xor_cryptography
                     characterInBin = string.Empty;
                 }
             }
-            WriteInDifferentColor($"(\"{Regex.Escape(encryptedTxt)}\")", ConsoleColor.Cyan);
+            WriteInDifferentColor($"({ToLiteral(encryptedTxt)})", ConsoleColor.Cyan);
             return encryptedTxt;
         }
 
@@ -213,7 +213,7 @@ namespace xor_cryptography
                 Thread.Sleep(300);
                 WriteInDifferentColor($"{++tryCount}) Comparando o tamanho da chave \"{keyInDec} (10)\" (\"{keyInBinStr} (2)\" ", ConsoleColor.Cyan);
                 WriteInDifferentColor($"[{keyInBinStr.Length} bits]", ConsoleColor.Yellow); 
-                WriteInDifferentColor($") obtida com a string que vai ser criptografada \"{Regex.Escape(textToEncrypt)}\" (\"{binStr} (2)\" ", ConsoleColor.Cyan);
+                WriteInDifferentColor($") obtida com a string que vai ser criptografada {ToLiteral(textToEncrypt)} (\"{binStr} (2)\" ", ConsoleColor.Cyan);
                 WriteInDifferentColor($"[{binStr.Length} bits]", ConsoleColor.Yellow);
                 WriteLineInDifferentColor($").", ConsoleColor.Cyan);
                 
@@ -224,7 +224,7 @@ namespace xor_cryptography
                     break;
                 }
                 
-                WriteLineInDifferentColor($"Nao! O tamanho da chave obtida nao e suficiente para criptografar com XOR a string \"{Regex.Escape(textToEncrypt)}\".", ConsoleColor.Blue);
+                WriteLineInDifferentColor($"Nao! O tamanho da chave obtida nao e suficiente para criptografar com XOR a string {ToLiteral(textToEncrypt)}.", ConsoleColor.Blue);
                 // concatenates the current key with the RU in the end to generate a bigger keys
                 char nextRUDigit = GetNextDigitFromRU(RUstr, ref RUcharPos);
                 keyInDec = ulong.Parse($"{keyInDec}{nextRUDigit}");
@@ -330,6 +330,14 @@ namespace xor_cryptography
             }
             
             return result;
+        }
+
+        /// <summary>
+        /// Helps showing the special characters on the screen./
+        /// </summary>
+        private static string ToLiteral(string input)
+        {
+            return JsonConvert.SerializeObject(input);
         }
     }
 }
