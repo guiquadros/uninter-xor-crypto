@@ -1,6 +1,6 @@
-Guilherme Quadros da Silva
+**Aluno:** Guilherme Quadros da Silva
 
-RU: 3282910
+**RU:** 3282910
 
 # Uninter - Matemática Computacional: AP Criptografia Simétrica com XOR
 Atividade Prática (AP) da disciplina de Matemática Computacional do curso de Engenharia de Computação da Uninter:
