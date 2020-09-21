@@ -20,7 +20,7 @@ O código é escrito em inglês por uma preferência minha e costume mesmo.
 
 Se você está lendo somente o PDF desse trabalho, o código, o executável e todo o resto também podem ser encontrados no seguinte repositório: https://github.com/guiquadros/uninter-xor-crypto
 
-Abaixo está a classe "Program" contendo todo o código-fonte do mesmo. Este projeto contém dependência com a biblioteca "Newtonsoft.Json", você consegue enontrá-la facilmente na internet ou instalá-la via nuget package manager na sua IDE de preferência, a DLL dela já está inclusa projeto que está no repositório acima mencionado. 
+Abaixo está a classe "Program.cs" contendo todo o código-fonte do programa. Este projeto contém dependência com a biblioteca "Newtonsoft.Json", você consegue enontrá-la facilmente na internet ou instalá-la via NuGet package manager na sua IDE de preferência, a DLL dela já está inclusa projeto que está no repositório acima mencionado. 
 
 ```csharp
 //#define DEBUG_BIN_CONVERSION
